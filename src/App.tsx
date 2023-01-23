@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Key } from 'react'
 
 let ID_COUNT = 0;
 
@@ -11,7 +11,7 @@ function App() {
   const [homeQuoteHidden, setHomeQuoteHidden] = useState<boolean>(false);
 
   interface Quote {
-    id: Int,
+    id: Key,
     content: String,
     author: String,
   }
