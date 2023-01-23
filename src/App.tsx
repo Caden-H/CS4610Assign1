@@ -2,93 +2,66 @@ import { useState, useEffect } from 'react'
 
 let ID_COUNT = 0;
 
-interface Todo {
-  id: number;
-  description: string;
-  completed: boolean;
-}
-
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [description, setDescription] = useState<string>('');
-  const [analyticRecorded, setAnalyticRecorded] = useState(false);
   const [randomQuote, setRandomQuote] = useState<string>('');
   const [randomQuoteAuthor, setRandomQuoteAuthor] = useState<string>('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [mainContainerClass, setMainContainerClass] = useState<string>('main-container-big');
+  const [homeQuoteHidden, setHomeQuoteHidden] = useState<boolean>(false);
 
   useEffect(() => {
-    if (todos.length === 2 && !analyticRecorded) {
-      alert('You have 2 todos!')
-      setAnalyticRecorded(true);
-    }
-  }, [todos, analyticRecorded])
-
-  let randomQ = ''
-
-  useEffect(() => {
-    // console.log('Mounted')
-    // fetch('https://usu-quotes-mimic.vercel.app/api/random')
-    //   .then(res => res.json())
-    //   .then(quote => setRandomQuote(quote.content))
-    // return () => {
-    //   setRandomQuoteAuthor(quote.author)
-    // }
-
-    const result = await fetch("https://usu-quotes-mimic.vercel.app/api/random");
-    console.log(await result.json());
+    fetch('https://usu-quotes-mimic.vercel.app/api/random')
+      .then(res => res.json())
+      .then(quote => {
+        setRandomQuote(quote.content)
+        setRandomQuoteAuthor(quote.author)
+      })
 
   }, [])
 
-  function saveTodo() {
-    const newTodo: Todo = {
-      id: ID_COUNT++,
-      description,
-      completed: false
-    };
-    setTodos([...todos, newTodo]);
-    setDescription('');
-  }
-
-  function toggleTodo(todo: Todo) {
-    // const index = todos.indexOf(todo);
-    // const newTodos = [...todos];
-    // newTodos[index] = {...todo, completed: !todo.completed};
-    const newTodos = todos.map((t) => {
-      if (t.id === todo.id) {
-        return {
-          ...todo,
-          completed: !todo.completed
-        }
-      }
-      return t;
-    })
-    setTodos(newTodos);
+  function searchQuote(searchText: String) {
+    fetch('https://usu-quotes-mimic.vercel.app/api/search?query=' + searchText)
+      .then(res => res.json())
+      .then(quotes => {
+        setSearchResults(quotes.results)
+        console.log(searchResults)
+        setHomeQuoteHidden(true)
+        setMainContainerClass('main-container')
+      })
   }
 
   return (
     <div className="App">
-      <div className='main-container'>
+      <div className={mainContainerClass}>
         <h1 className='main-header'>Quote Search</h1>
-        <form className='search-container'>
+        <form className='search-container' onSubmit={(e) => {
+            e.preventDefault();
+            searchQuote(description)
+          }}>
           <input 
           type="text" 
           value={description}
           placeholder='Albert Einstein'
           onChange={(e) => setDescription(e.target.value)}
-          onSubmit={(e) => {  }}
           />
         </form>
 
-        <section className='home-quote'>
+        <section className='home-quote' hidden={homeQuoteHidden}>
           <h3>{randomQuote}</h3>
+          <p>{randomQuoteAuthor}</p>
         </section>
 
-        <section className='search-results'>
-          
+        <section className='search-results' hidden={!homeQuoteHidden}>
+          { searchResults.length > 0 ? searchResults.map((quote) => (
+            <div key={quote.id} className="quote-item">
+              <h3>{quote.content}</h3>
+              <p>{quote.author}</p>
+            </div>
+          )) : <div className="quote-item"><h3>No results found</h3></div>}
         </section>
-
       </div>
       
-      <button onClick={saveTodo}>Save</button>
 
       
 
