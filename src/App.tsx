@@ -10,6 +10,12 @@ function App() {
   const [mainContainerClass, setMainContainerClass] = useState<string>('main-container-big');
   const [homeQuoteHidden, setHomeQuoteHidden] = useState<boolean>(false);
 
+  interface Quote {
+    id: Int,
+    content: String,
+    author: String,
+  }
+
   useEffect(() => {
     fetch('https://usu-quotes-mimic.vercel.app/api/random')
       .then(res => res.json())
@@ -53,7 +59,7 @@ function App() {
         </section>
 
         <section className='search-results' hidden={!homeQuoteHidden}>
-          { searchResults.length > 0 ? searchResults.map((quote) => (
+          { searchResults.length > 0 ? searchResults.map((quote: Quote) => (
             <div key={quote.id} className="quote-item">
               <h3>{quote.content}</h3>
               <p>{quote.author}</p>
@@ -64,16 +70,6 @@ function App() {
       
 
       
-
-      {/* <div>
-        {
-          todos.map((todo) => (
-            <div key={todo.id}>
-              <input type="checkbox" checked={todo.completed} onChange={() => toggleTodo(todo)}/> {todo.description}
-            </div>
-          ))
-        }
-      </div> */}
     </div>
     
   )
