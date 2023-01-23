@@ -10,16 +10,6 @@
 
 }
 
-
-/* body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-} */
-
-
 .quote-item {
   border-radius: 16px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
@@ -66,10 +56,6 @@ input {
   background-color: #9bf5fb;
 }
 
-
-
-
-/* make h1 header match the style of quote-item and center on page */
 h1 {
   text-align: center;
   font-size: 2em;
@@ -79,27 +65,4 @@ h1 {
   border-bottom: 1px solid rgba(0, 0, 0, 0.87);
   padding-bottom: 0.2em;
   display: inline-block;
-  
-
 }
-
-
-button {
-  border-radius: 16px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
